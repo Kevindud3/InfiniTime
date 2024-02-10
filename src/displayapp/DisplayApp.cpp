@@ -29,6 +29,10 @@
 #include "displayapp/screens/Dice.h"
 #include "displayapp/screens/PassKey.h"
 #include "displayapp/screens/Error.h"
+#include "displayapp/screens/Music.h"
+#include "displayapp/screens/Symbols.h"
+#include <cstdint>
+#include "displayapp/DisplayApp.h"
 #include "components/ble/MusicService.h"
 
 #include "drivers/Cst816s.h"
@@ -364,9 +368,7 @@ void DisplayApp::Refresh() {
         LoadNewScreen(Apps::SysInfo, DisplayApp::FullRefreshDirections::Up);
         break;
       case Messages::ButtonDoubleClicked:
-          musicService.event(Controllers::MusicService::EVENT_MUSIC_NEXT);
-      
-        
+          musicService.event(Controllers::MusicService::EVENT_MUSIC_NEXT);      
         break;
 
       case Messages::BleFirmwareUpdateStarted:
