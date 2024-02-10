@@ -365,7 +365,7 @@ void DisplayApp::Refresh() {
         break;
       case Messages::ButtonDoubleClicked:
           musicService.event(Controllers::MusicService::EVENT_MUSIC_NEXT);
-      return true;
+      
         
         break;
 
