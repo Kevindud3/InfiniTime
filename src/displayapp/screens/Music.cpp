@@ -255,19 +255,19 @@ void Music::OnObjectEvent(lv_obj_t* obj, lv_event_t event) {
 
 bool Music::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
   switch (event) {
-    case TouchEvents::SwipeUp: {
+    case TouchEvents::SwipeLeft: {
       musicService.event(Controllers::MusicService::EVENT_MUSIC_VOLUP);
       return true;
     }
-    case TouchEvents::SwipeDown: {
+    case TouchEvents::SwipeRigth: {
       musicService.event(Controllers::MusicService::EVENT_MUSIC_VOLDOWN);
       return true;
     }
-    case TouchEvents::SwipeLeft: {
+    case TouchEvents::SwipeDown: {
       musicService.event(Controllers::MusicService::EVENT_MUSIC_NEXT);
       return true;
     }
-    case TouchEvents::SwipeRight: {
+    case TouchEvents::SwipeUp: {
       musicService.event(Controllers::MusicService::EVENT_MUSIC_PREV);
       return true;
     }
