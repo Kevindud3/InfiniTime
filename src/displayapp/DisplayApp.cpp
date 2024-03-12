@@ -363,12 +363,11 @@ void DisplayApp::Refresh() {
         // Create reboot app and open it instead
         LoadNewScreen(Apps::SysInfo, DisplayApp::FullRefreshDirections::Up);
         break;
-     case Messages::ButtonDoubleClicked:
-    if (currentApp != Apps::Notifications && currentApp != Apps::NotificationsPreview) {
-        // Trigger the next music action here
-        musicService.event(Controllers::MusicService::EVENT_MUSIC_NEXT);
-    }      
-    break;
+      case Messages::ButtonDoubleClicked:
+          if (currentApp != Apps::Notifications && currentApp != Apps::NotificationsPreview) {
+          LoadNewScreen(Apps::Notifications, DisplayApp::FullRefreshDirections::Down);
+        }      
+        break; 
 
       case Messages::BleFirmwareUpdateStarted:
         LoadNewScreen(Apps::FirmwareUpdate, DisplayApp::FullRefreshDirections::Down);
