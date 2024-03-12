@@ -259,7 +259,7 @@ bool Music::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
       musicService.event(Controllers::MusicService::EVENT_MUSIC_VOLUP);
       return true;
     }
-    case TouchEvents::SwipeRigth: {
+    case TouchEvents::SwipeRight: {
       musicService.event(Controllers::MusicService::EVENT_MUSIC_VOLDOWN);
       return true;
     }
