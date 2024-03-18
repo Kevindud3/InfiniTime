@@ -252,7 +252,10 @@ void Music::OnObjectEvent(lv_obj_t* obj, lv_event_t event) {
 }
 
 //modified to only operate via swipe
-
+bool Music::OnButtonPushed() {
+   musicService.event(Controllers::MusicService::EVENT_MUSIC_NEXT);
+     return true;
+}
 bool Music::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
   switch (event) {
     case TouchEvents::SwipeLeft: {
