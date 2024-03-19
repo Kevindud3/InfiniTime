@@ -449,6 +449,7 @@ void DisplayApp::LoadScreen(Apps app, DisplayApp::FullRefreshDirections directio
       else {
         currentScreen.reset(userWatchFaces[0].create(controllers));
       }
+      settingsController.SetAppMenu(0);
     } break;
     case Apps::Error:
       currentScreen = std::make_unique<Screens::Error>(bootError);
@@ -564,9 +565,7 @@ void DisplayApp::PushMessage(Messages msg) {
   if (in_isr()) {
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
     xQueueSendFromISR(msgQueue, &msg, &xHigherPriorityTaskWoken);
-    if (xHigherPriorityTaskWoken == pdTRUE) {
-      portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-    }
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
   } else {
     TickType_t timeout = portMAX_DELAY;
     // Make xQueueSend() non-blocking if the message is a Notification message. We do this to avoid
