@@ -260,19 +260,19 @@ bool Music::OnButtonPushed() {
     
 bool Music::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
   switch (event) {
-    case TouchEvents::SwipeLeft: {
+    case TouchEvents::SwipeUP: {
       musicService.event(Controllers::MusicService::EVENT_MUSIC_VOLUP);
       return true;
     }
-    case TouchEvents::SwipeRight: {
+    case TouchEvents::SwipeDown: {
       musicService.event(Controllers::MusicService::EVENT_MUSIC_VOLDOWN);
       return true;
     }
-    case TouchEvents::SwipeDown: {
+    case TouchEvents::SwipeLeft: {
       musicService.event(Controllers::MusicService::EVENT_MUSIC_NEXT);
       return true;
     }
-    case TouchEvents::SwipeUp: {
+    case TouchEvents::SwipeRight: {
       musicService.event(Controllers::MusicService::EVENT_MUSIC_PREV);
       return true;
     }
