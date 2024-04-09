@@ -25,6 +25,7 @@
 #include "displayapp/apps/Apps.h"
 #include "displayapp/Controllers.h"
 #include "Symbols.h"
+#include "displayapp/widgets/Counter.h"
 
 namespace Pinetime {
   namespace Controllers {
@@ -97,7 +98,7 @@ namespace Pinetime {
       static constexpr const char* icon = Screens::Symbols::music;
 
       static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(controllers.musicService,
+        return new Screens::Music(*controllers.musicService,
         controllers.motorController);
       };
     };
