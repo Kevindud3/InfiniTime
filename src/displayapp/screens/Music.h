@@ -25,7 +25,6 @@
 #include "displayapp/apps/Apps.h"
 #include "displayapp/Controllers.h"
 #include "Symbols.h"
-#include "displayapp/widgets/Counter.h"
 
 namespace Pinetime {
   namespace Controllers {
@@ -36,8 +35,7 @@ namespace Pinetime {
     namespace Screens {
       class Music : public Screen {
       public:
-        Music(Pinetime::Controllers::MusicService& music,
-        Controllers::MotorController& motorController);
+        Music(Pinetime::Controllers::MusicService& music);
 
         ~Music() override;
 
@@ -86,7 +84,6 @@ namespace Pinetime {
         bool playing;
 
         lv_task_t* taskRefresh;
-        Controllers::MotorController& motorController;
 
         /** Watchapp */
       };
@@ -98,8 +95,7 @@ namespace Pinetime {
       static constexpr const char* icon = Screens::Symbols::music;
 
       static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(*controllers.musicService,
-        controllers.motorController);
+        return new Screens::Music(*controllers.musicService);
       };
     };
   }
