@@ -48,8 +48,8 @@ inline void lv_img_set_src_arr(lv_obj_t* img, const lv_img_dsc_t* src_img) {
  *
  * TODO: Investigate Apple Media Service and AVRCPv1.6 support for seamless integration
  */
-Music::Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController)
-  : musicService(music), motorController(motorController) {
+Music::Music(Pinetime::Controllers::MusicService& musicService, Pinetime::Controllers::MotorController& motorController)
+  : musicService(musicService), motorController(motorController) {
   lv_obj_t* label;
 
   lv_style_init(&btn_style);
