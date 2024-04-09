@@ -1,3 +1,4 @@
+
 /*  Copyright (C) 2020 JF, Adam Pigg, Avamander
 
     This file is part of InfiniTime.
@@ -34,7 +35,8 @@ namespace Pinetime {
     namespace Screens {
       class Music : public Screen {
       public:
-        Music(Pinetime::Controllers::MusicService& music);
+        Music(Pinetime::Controllers::MusicService& music,
+        Controllers::MotorController& motorController,);
 
         ~Music() override;
 
@@ -83,6 +85,7 @@ namespace Pinetime {
         bool playing;
 
         lv_task_t* taskRefresh;
+        Controllers::MotorController& motorController;
 
         /** Watchapp */
       };
@@ -94,7 +97,8 @@ namespace Pinetime {
       static constexpr const char* icon = Screens::Symbols::music;
 
       static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(*controllers.musicService);
+        return new Screens::Music(*controllers.musicService,
+        controllers.motorController);
       };
     };
   }
