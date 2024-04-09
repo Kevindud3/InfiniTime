@@ -1,3 +1,4 @@
+
 /*  Copyright (C) 2020 JF, Adam Pigg, Avamander
 
     This file is part of InfiniTime.
@@ -23,7 +24,6 @@
 #include "displayapp/icons/music/disc.c"
 #include "displayapp/icons/music/disc_f_1.c"
 #include "displayapp/icons/music/disc_f_2.c"
-#include “components/motor/MotorController.h”
 
 using namespace Pinetime::Applications::Screens;
 
@@ -255,7 +255,6 @@ void Music::OnObjectEvent(lv_obj_t* obj, lv_event_t event) {
 //modified to only operate via swipe
 bool Music::OnButtonPushed() {
    musicService.event(Controllers::MusicService::EVENT_MUSIC_NEXT);
-   motorController.RunForDuration(30);
      return true;
 }
 
