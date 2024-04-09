@@ -25,7 +25,6 @@
 #include "displayapp/apps/Apps.h"
 #include "displayapp/Controllers.h"
 #include "Symbols.h"
-#include "components/motor/MotorController.h"
 
 namespace Pinetime {
   namespace Controllers {
@@ -36,8 +35,7 @@ namespace Pinetime {
     namespace Screens {
       class Music : public Screen {
       public:
-       Music(Pinetime::Controllers::MusicService& musicService, Pinetime::Controllers::MotorController& motorController);
-
+        Music(Pinetime::Controllers::MusicService& music);
 
         ~Music() override;
 
@@ -48,8 +46,6 @@ namespace Pinetime {
 
 
       private:
-        Controllers::MotorController& motorController;
-
         bool OnTouchEvent(TouchEvents event) override;
 
         void UpdateLength();
@@ -98,9 +94,9 @@ namespace Pinetime {
       static constexpr Apps app = Apps::Music;
       static constexpr const char* icon = Screens::Symbols::music;
 
-static Screens::Screen* Create(AppControllers& controllers) {
-  return new Screens::Music(controllers.musicService, controllers.motorController);
-};
+      static Screens::Screen* Create(AppControllers& controllers) {
+        return new Screens::Music(*controllers.musicService);
+      };
     };
   }
 }
