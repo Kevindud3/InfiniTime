@@ -30,8 +30,7 @@
 namespace Pinetime {
   namespace Controllers {
     class MusicService;
-    class MotorController;
-  }
+     }
 
   namespace Applications {
     namespace Screens {
@@ -50,7 +49,7 @@ namespace Pinetime {
 
       private:
         bool OnTouchEvent(TouchEvents event) override;
-
+        Controllers::MotorController& motorController;
         void UpdateLength();
 
         lv_obj_t* btnPrev;
@@ -72,7 +71,7 @@ namespace Pinetime {
         bool frameB;
 
         Pinetime::Controllers::MusicService& musicService;
-
+        Controllers::MotorController& motorController;
         std::string artist;
         std::string album;
         std::string track;
@@ -98,7 +97,7 @@ namespace Pinetime {
       static constexpr const char* icon = Screens::Symbols::music;
 
       static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(*controllers.musicService);
+        return new Screens::Music(controllers.motorController, *controllers.musicService);
       };
     };
   }
