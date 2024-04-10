@@ -29,14 +29,13 @@
 namespace Pinetime {
   namespace Controllers {
     class MusicService;
-    class MotorController;
   }
 
   namespace Applications {
     namespace Screens {
       class Music : public Screen {
       public:
-   Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController);
+        Music(Pinetime::Controllers::MusicService& music);
 
         ~Music() override;
 
@@ -48,7 +47,7 @@ namespace Pinetime {
 
       private:
         bool OnTouchEvent(TouchEvents event) override;
-        Pinetime::Controllers::MotorController& motorController;
+
         void UpdateLength();
 
         lv_obj_t* btnPrev;
@@ -90,14 +89,14 @@ namespace Pinetime {
       };
     }
 
-template <>
-struct AppTraits<Apps::Music> {
-  static constexpr Apps app = Apps::Music;
-  static constexpr const char* icon = Screens::Symbols::music;
+    template <>
+    struct AppTraits<Apps::Music> {
+      static constexpr Apps app = Apps::Music;
+      static constexpr const char* icon = Screens::Symbols::music;
 
-  static Screens::Screen* Create(AppControllers& controllers) {
-    return new Screens::Music(*controllers.musicService, controllers.motorController);
-  };
-};
+      static Screens::Screen* Create(AppControllers& controllers) {
+        return new Screens::Music(*controllers.musicService);
+      };
+    };
   }
 }
