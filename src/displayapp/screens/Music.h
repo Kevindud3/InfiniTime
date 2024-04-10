@@ -97,7 +97,7 @@ namespace Pinetime {
       static constexpr const char* icon = Screens::Symbols::music;
 
       static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(*controllers.musicService);
+        return new Screens::Music(controllers.motorController, *controllers.musicService);
       };
     };
   }
