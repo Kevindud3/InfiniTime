@@ -89,14 +89,14 @@ namespace Pinetime {
       };
     }
 
-    template <>
-    struct AppTraits<Apps::Music> {
-      static constexpr Apps app = Apps::Music;
-      static constexpr const char* icon = Screens::Symbols::music;
+template <>
+struct AppTraits<Apps::Music> {
+  static constexpr Apps app = Apps::Music;
+  static constexpr const char* icon = Screens::Symbols::music;
 
-      static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(*controllers.musicService);
-      };
-    };
+  static Screens::Screen* Create(AppControllers& controllers) {
+    return new Screens::Music(*controllers.musicService, controllers.motorController);
+  };
+};
   }
 }
