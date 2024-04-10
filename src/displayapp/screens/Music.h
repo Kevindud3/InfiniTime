@@ -36,20 +36,20 @@ namespace Pinetime {
     namespace Screens {
       class Music : public Screen {
       public:
-        Music(Controllers::MotorController& motorController,
-              Pinetime::Controllers::MusicService& music);
+        Music(Pinetime::Controllers::MusicService& music);
 
         ~Music() override;
 
         void Refresh() override;
 
         void OnObjectEvent(lv_obj_t* obj, lv_event_t event);
+
         bool OnButtonPushed() override;
 
 
       private:
         bool OnTouchEvent(TouchEvents event) override;
-        Controllers::MotorController& motorController;
+       
         void UpdateLength();
 
         lv_obj_t* btnPrev;
@@ -71,7 +71,6 @@ namespace Pinetime {
         bool frameB;
 
         Pinetime::Controllers::MusicService& musicService;
-        Controllers::MotorController& motorController;
         std::string artist;
         std::string album;
         std::string track;
@@ -97,7 +96,7 @@ namespace Pinetime {
       static constexpr const char* icon = Screens::Symbols::music;
 
       static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(controllers.motorController, *controllers.musicService);
+        return new Screens::Music(*controllers.musicService);
       };
     };
   }
