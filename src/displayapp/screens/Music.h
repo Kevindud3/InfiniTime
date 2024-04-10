@@ -47,7 +47,7 @@ namespace Pinetime {
 
       private:
         bool OnTouchEvent(TouchEvents event) override;
-
+        Pinetime::Controllers::MotorController& motorController;
         void UpdateLength();
 
         lv_obj_t* btnPrev;
