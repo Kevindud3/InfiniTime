@@ -30,7 +30,7 @@
 namespace Pinetime {
   namespace Controllers {
     class MusicService;
-    class MotorController;
+
      }
 
   namespace Applications {
