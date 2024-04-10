@@ -25,6 +25,7 @@
 #include "displayapp/apps/Apps.h"
 #include "displayapp/Controllers.h"
 #include "Symbols.h"
+#include "components/motor/MotorController.h"
 
 namespace Pinetime {
   namespace Controllers {
