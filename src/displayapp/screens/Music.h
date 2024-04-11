@@ -24,6 +24,7 @@
 #include "displayapp/apps/Apps.h"
 #include "displayapp/Controllers.h"
 #include "Symbols.h"
+#include "components/motor/MotorController.h" // Include MotorController
 
 namespace Pinetime {
   namespace Controllers {
@@ -34,7 +35,7 @@ namespace Pinetime {
     namespace Screens {
       class Music : public Screen {
       public:
-        Music(Pinetime::Controllers::MusicService& music);
+        Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController); // Add MotorController to constructor
 
         ~Music() override;
 
@@ -68,7 +69,7 @@ namespace Pinetime {
         bool frameB;
 
         Pinetime::Controllers::MusicService& musicService;
-
+        Pinetime::Controllers::MotorController& motorController; // Add MotorController as a member
         std::string artist;
         std::string album;
         std::string track;
@@ -94,7 +95,7 @@ namespace Pinetime {
       static constexpr const char* icon = Screens::Symbols::music;
 
       static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(*controllers.musicService);
+        return new Screens::Music(*controllers.musicService, controllers.motorController); // Pass MotorController to the Music constructor
       };
     };
   }
