@@ -1,102 +1,88 @@
-/*  Copyright (C) 2020 JF, Adam Pigg, Avamander
+/* Copyright (C) 2020 JF, Adam Pigg, Avamander
 
-    This file is part of InfiniTime.
+This file is part of InfiniTime.
 
-    InfiniTime is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published
-    by the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+InfiniTime is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    InfiniTime is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+InfiniTime is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
-#pragma once
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include <FreeRTOS.h>
-#include <lvgl/src/lv_core/lv_obj.h>
-#include <string>
-#include "displayapp/screens/Screen.h"
-#include "displayapp/apps/Apps.h"
-#include "displayapp/Controllers.h"
-#include "Symbols.h"
-#include "components/motor/MotorController.h" // Include MotorController
+*/ #pragma once
 
-namespace Pinetime {
-  namespace Controllers {
-    class MusicService;
-  }
+#include <FreeRTOS.h> #include <lvgl/src/lv_core/lv_obj.h> #include #include "displayapp/screens/Screen.h" #include "displayapp/apps/Apps.h" #include "displayapp/Controllers.h" #include "Symbols.h" #include "components/motor/MotorController.h"
 
-  namespace Applications {
-    namespace Screens {
-      class Music : public Screen {
-      public:
-        Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController); // Add MotorController to constructor
+namespace Pinetime { namespace Controllers { class MusicService;
 
-        ~Music() override;
+ }
 
-        void Refresh() override;
+namespace Applications { namespace Screens { class Music : public Screen { public: Music(Pinetime::Controllers::MusicService& music); ~Music() override;
 
-        void OnObjectEvent(lv_obj_t* obj, lv_event_t event);
-        bool OnButtonPushed() override;
+    void Refresh() override;
 
-      private:
-        bool OnTouchEvent(TouchEvents event) override;
+    void OnObjectEvent(lv_obj_t* obj, lv_event_t event);
 
-        void UpdateLength();
+    bool OnButtonPushed() override;
 
-        lv_obj_t* btnPrev;
-        lv_obj_t* btnPlayPause;
-        lv_obj_t* btnNext;
-        lv_obj_t* btnVolDown;
-        lv_obj_t* btnVolUp;
-        lv_obj_t* txtArtist;
-        lv_obj_t* txtTrack;
-        lv_obj_t* txtPlayPause;
 
-        lv_obj_t* imgDisc;
-        lv_obj_t* imgDiscAnim;
-        lv_obj_t* txtTrackDuration;
+  private:
+    bool OnTouchEvent(TouchEvents event) override;
+   
+    void UpdateLength();
 
-        lv_style_t btn_style;
+    lv_obj_t* btnPrev;
+    lv_obj_t* btnPlayPause;
+    lv_obj_t* btnNext;
+    lv_obj_t* btnVolDown;
+    lv_obj_t* btnVolUp;
+    lv_obj_t* txtArtist;
+    lv_obj_t* txtTrack;
+    lv_obj_t* txtPlayPause;
 
-        /** For the spinning disc animation */
-        bool frameB;
+    lv_obj_t* imgDisc;
+    lv_obj_t* imgDiscAnim;
+    lv_obj_t* txtTrackDuration;
 
-        Pinetime::Controllers::MusicService& musicService;
-        Pinetime::Controllers::MotorController& motorController; // Add MotorController as a member
+    lv_style_t btn_style;
 
-        std::string artist;
-        std::string album;
-        std::string track;
+    /** For the spinning disc animation */
+    bool frameB;
 
-        /** Total length in seconds */
-        int totalLength = 0;
-        /** Current position in seconds */
-        int currentPosition;
-        /** Last time an animation update or timer was incremented */
-        TickType_t lastIncrement = 0;
+    Pinetime::Controllers::MusicService& musicService;
+    std::string artist;
+    std::string album;
+    std::string track;
 
-        bool playing;
+    /** Total length in seconds */
+    int totalLength = 0;
+    /** Current position in seconds */
+    int currentPosition;
+    /** Last time an animation update or timer was incremented */
+    TickType_t lastIncrement = 0;
 
-        lv_task_t* taskRefresh;
+    bool playing;
 
-        /** Watchapp */
-      };
-    }
+    lv_task_t* taskRefresh;
 
-    template <>
-    struct AppTraits<Apps::Music> {
-      static constexpr Apps app = Apps::Music;
-      static constexpr const char* icon = Screens::Symbols::music;
-
-      static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(*controllers.musicService, controllers.motorController); // Pass MotorController to the Music constructor
-      };
-    };
-  }
+    /** Watchapp */
+  };
 }
+
+template <>
+struct AppTraits<Apps::Music> {
+  static constexpr Apps app = Apps::Music;
+  static constexpr const char* icon = Screens::Symbols::music;
+
+  static Screens::Screen* Create(AppControllers& controllers) {
+    return new Screens::Music(*controllers.musicService);
+  };
+};
+
+} }
