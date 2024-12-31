@@ -42,17 +42,31 @@ inline void lv_img_set_src_arr(lv_obj_t* img, const lv_img_dsc_t* src_img) {
   lv_img_set_src(img, src_img);
 }
 
-  label_time = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, 0, 0);
 /**
  * Music control watchapp
  *
  * TODO: Investigate Apple Media Service and AVRCPv1.6 support for seamless integration
  */
-Music::Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController)
-    : musicService(music), motorController(motorController) {
+Music::Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController, Pinetime::Controllers::DateTime& dateTimeController)
+
+	: musicService(music),
+	dateTimeController (dateTimeController),
+	motorController(motorController) {
   lv_obj_t* label;
+
+// QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
+//                           const Pinetime::Controllers::Battery& batteryController,
+//                           Controllers::DateTime& dateTimeController,
+//                           Controllers::BrightnessController& brightness,
+//                           Controllers::MotorController& motorController,
+//                           Pinetime::Controllers::Settings& settingsController,
+//                           const Controllers::Ble& bleController)
+//: app {app},
+//  dateTimeController {dateTimeController},
+
+  label_time = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, 0, 0);
 
   lv_style_init(&btn_style);
   lv_style_set_radius(&btn_style, LV_STATE_DEFAULT, 20);
