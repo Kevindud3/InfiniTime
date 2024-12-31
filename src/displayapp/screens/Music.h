@@ -36,7 +36,7 @@ namespace Pinetime {
     namespace Screens {
       class Music : public Screen {
       public:
-        Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController); // Add MotorController to constructor
+        Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController, Pinetime::Controllers::DateTime& dateTimeController); // Add MotorController to constructor
 
         ~Music() override;
 
@@ -71,6 +71,7 @@ namespace Pinetime {
 
         Pinetime::Controllers::MusicService& musicService;
         Pinetime::Controllers::MotorController& motorController; // Add MotorController as a member
+		Pinetime::Controllers::DateTime& dateTimeController;
         std::string artist;
         std::string album;
         std::string track;
