@@ -25,6 +25,7 @@
 #include "displayapp/Controllers.h"
 #include "Symbols.h"
 #include "components/motor/MotorController.h" // Include MotorController
+#include "components/datetime/DateTimeController.h"
 
 namespace Pinetime {
   namespace Controllers {
