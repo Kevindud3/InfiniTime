@@ -1,20 +1,3 @@
-/*  Copyright (C) 2020 JF, Adam Pigg, Avamander
-
-    This file is part of InfiniTime.
-
-    InfiniTime is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published
-    by the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    InfiniTime is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
 #pragma once
 
 #include <FreeRTOS.h>
@@ -25,6 +8,7 @@
 #include "displayapp/Controllers.h"
 #include "Symbols.h"
 #include "components/motor/MotorController.h" // Include MotorController
+#include "components/datetime/DateTimeController.h" // Include DateTimeController
 
 namespace Pinetime {
   namespace Controllers {
@@ -35,7 +19,9 @@ namespace Pinetime {
     namespace Screens {
       class Music : public Screen {
       public:
-        Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController); // Add MotorController to constructor
+        Music(Pinetime::Controllers::MusicService& music,
+              Pinetime::Controllers::MotorController& motorController,
+              Controllers::DateTime& dateTimeController); // Add DateTimeController to constructor
 
         ~Music() override;
 
@@ -43,7 +29,6 @@ namespace Pinetime {
 
         void OnObjectEvent(lv_obj_t* obj, lv_event_t event);
         bool OnButtonPushed() override;
-
 
       private:
         bool OnTouchEvent(TouchEvents event) override;
@@ -70,6 +55,7 @@ namespace Pinetime {
 
         Pinetime::Controllers::MusicService& musicService;
         Pinetime::Controllers::MotorController& motorController; // Add MotorController as a member
+        Controllers::DateTime& dateTimeController; // Add DateTimeController as a member
         std::string artist;
         std::string album;
         std::string track;
@@ -85,6 +71,9 @@ namespace Pinetime {
 
         lv_task_t* taskRefresh;
 
+        lv_obj_t* label_time; // Add label for time
+        lv_task_t* taskUpdate; // Add task for updating time
+
         /** Watchapp */
       };
     }
@@ -95,7 +84,7 @@ namespace Pinetime {
       static constexpr const char* icon = Screens::Symbols::music;
 
       static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(*controllers.musicService, controllers.motorController); // Pass MotorController to the Music constructor
+        return new Screens::Music(*controllers.musicService, controllers.motorController, *controllers.dateTimeController); // Pass DateTimeController to the Music constructor
       };
     };
   }

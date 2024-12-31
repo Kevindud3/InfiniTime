@@ -1,20 +1,3 @@
-/*  Copyright (C) 2020 JF, Adam Pigg, Avamander
-
-    This file is part of InfiniTime.
-
-    InfiniTime is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published
-    by the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    InfiniTime is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
 #include "displayapp/screens/Music.h"
 #include "displayapp/screens/Symbols.h"
 #include <cstdint>
@@ -47,8 +30,12 @@ inline void lv_img_set_src_arr(lv_obj_t* img, const lv_img_dsc_t* src_img) {
  *
  * TODO: Investigate Apple Media Service and AVRCPv1.6 support for seamless integration
  */
-Music::Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController)
-    : musicService(music), motorController(motorController) {
+Music::Music(Pinetime::Controllers::MusicService& music,
+             Pinetime::Controllers::MotorController& motorController,
+             Controllers::DateTime& dateTimeController)
+    : musicService(music),
+      motorController(motorController),
+      dateTimeController(dateTimeController) {
   lv_obj_t* label;
 
   lv_style_init(&btn_style);
@@ -145,10 +132,19 @@ Music::Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::
   musicService.event(Controllers::MusicService::EVENT_MUSIC_OPEN);
 
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
+
+  // Add time label
+  label_time = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 0, 0);
+
+  // Add task to update time label
+  taskUpdate = lv_task_create(lv_update_task, 5000, LV_TASK_PRIO_MID, this);
 }
 
 Music::~Music() {
   lv_task_del(taskRefresh);
+  lv_task_del(taskUpdate); // Delete the time update task
   lv_style_reset(&btn_style);
   lv_obj_clean(lv_scr_act());
 }
@@ -203,6 +199,9 @@ void Music::Refresh() {
   } else {
     lv_label_set_text_static(txtPlayPause, Symbols::play);
   }
+
+  // Update time label
+  lv_label_set_text(label_time, dateTimeController.FormattedTime().c_str());
 }
 
 void Music::UpdateLength() {
@@ -259,7 +258,6 @@ bool Music::OnButtonPushed() {
      return true;
 }
 
-    
 bool Music::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
   switch (event) {
     case TouchEvents::SwipeUp: {
@@ -294,4 +292,10 @@ bool Music::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
       return true;
     }
   }
+}
+
+// Add the task callback function
+void lv_update_task(struct _lv_task_t* task) {
+  auto* user_data = static_cast<Music*>(task->user_data);
+  user_data->UpdateScreen();
 }
