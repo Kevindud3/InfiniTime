@@ -30,6 +30,8 @@ namespace Pinetime {
         void OnObjectEvent(lv_obj_t* obj, lv_event_t event);
         bool OnButtonPushed() override;
 
+		void UpdateScreen();
+
       private:
         bool OnTouchEvent(TouchEvents event) override;
 
