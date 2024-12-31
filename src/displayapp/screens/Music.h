@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <FreeRTOS.h>
@@ -8,7 +9,6 @@
 #include "displayapp/Controllers.h"
 #include "Symbols.h"
 #include "components/motor/MotorController.h" // Include MotorController
-#include "components/datetime/DateTimeController.h" // Include DateTimeController
 
 namespace Pinetime {
   namespace Controllers {
@@ -19,9 +19,7 @@ namespace Pinetime {
     namespace Screens {
       class Music : public Screen {
       public:
-        Music(Pinetime::Controllers::MusicService& music,
-              Pinetime::Controllers::MotorController& motorController,
-              Pinetime::Controllers::DateTime& dateTimeController); // Add DateTimeController to constructor
+        Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController); // Add MotorController to constructor
 
         ~Music() override;
 
@@ -29,8 +27,6 @@ namespace Pinetime {
 
         void OnObjectEvent(lv_obj_t* obj, lv_event_t event);
         bool OnButtonPushed() override;
-
-		void UpdateScreen();
 
       private:
         bool OnTouchEvent(TouchEvents event) override;
@@ -57,7 +53,6 @@ namespace Pinetime {
 
         Pinetime::Controllers::MusicService& musicService;
         Pinetime::Controllers::MotorController& motorController; // Add MotorController as a member
-		Pinetime::Controllers::DateTime& dateTimeController; // Add DateTimeController as a member
         std::string artist;
         std::string album;
         std::string track;
@@ -72,11 +67,13 @@ namespace Pinetime {
         bool playing;
 
         lv_task_t* taskRefresh;
-
-        lv_obj_t* label_time; // Add label for time
-        lv_task_t* taskUpdate; // Add task for updating time
+        lv_task_t* taskUpdate;
+        lv_obj_t* label_time;
 
         /** Watchapp */
+
+        static void lv_update_task(struct _lv_task_t* task);
+        void UpdateScreen();
       };
     }
 
@@ -86,8 +83,9 @@ namespace Pinetime {
       static constexpr const char* icon = Screens::Symbols::music;
 
       static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(*controllers.musicService, controllers.motorController, controllers.dateTimeController); // Pass DateTimeController to the Music constructor
+        return new Screens::Music(*controllers.musicService, controllers.motorController); // Pass MotorController to the Music constructor
       };
     };
   }
 }
+

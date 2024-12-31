@@ -1,3 +1,4 @@
+
 #include "displayapp/screens/Music.h"
 #include "displayapp/screens/Symbols.h"
 #include <cstdint>
@@ -30,12 +31,8 @@ inline void lv_img_set_src_arr(lv_obj_t* img, const lv_img_dsc_t* src_img) {
  *
  * TODO: Investigate Apple Media Service and AVRCPv1.6 support for seamless integration
  */
-Music::Music(Pinetime::Controllers::MusicService& music,
-             Pinetime::Controllers::MotorController& motorController,
-             Pinetime::Controllers::DateTime& dateTimeController)
-    : musicService(music),
-      motorController(motorController),
-      dateTimeController(dateTimeController) {
+Music::Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController)
+    : musicService(music), motorController(motorController) {
   lv_obj_t* label;
 
   lv_style_init(&btn_style);
@@ -138,13 +135,13 @@ Music::Music(Pinetime::Controllers::MusicService& music,
   lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
   lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
-  // Add task to update time label
+  // Create a task to update the time
   taskUpdate = lv_task_create(lv_update_task, 5000, LV_TASK_PRIO_MID, this);
 }
 
 Music::~Music() {
   lv_task_del(taskRefresh);
-  lv_task_del(taskUpdate); // Delete the time update task
+  lv_task_del(taskUpdate);
   lv_style_reset(&btn_style);
   lv_obj_clean(lv_scr_act());
 }
@@ -199,9 +196,6 @@ void Music::Refresh() {
   } else {
     lv_label_set_text_static(txtPlayPause, Symbols::play);
   }
-
-  // Update time label
-  lv_label_set_text(label_time, dateTimeController.FormattedTime().c_str());
 }
 
 void Music::UpdateLength() {
@@ -294,8 +288,12 @@ bool Music::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
   }
 }
 
-// Add the task callback function
-void lv_update_task(struct _lv_task_t* task) {
+void Music::lv_update_task(struct _lv_task_t* task) {
   auto* user_data = static_cast<Music*>(task->user_data);
   user_data->UpdateScreen();
 }
+
+void Music::UpdateScreen() {
+  lv_label_set_text(label_time, dateTimeController.FormattedTime().c_str());
+}
+
