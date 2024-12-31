@@ -47,26 +47,9 @@ inline void lv_img_set_src_arr(lv_obj_t* img, const lv_img_dsc_t* src_img) {
  *
  * TODO: Investigate Apple Media Service and AVRCPv1.6 support for seamless integration
  */
-Music::Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController, Pinetime::Controllers::DateTime& dateTimeController)
-
-	: musicService(music),
-	dateTimeController (dateTimeController),
-	motorController(motorController) {
+Music::Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController)
+    : musicService(music), motorController(motorController) {
   lv_obj_t* label;
-
-// QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
-//                           const Pinetime::Controllers::Battery& batteryController,
-//                           Controllers::DateTime& dateTimeController,
-//                           Controllers::BrightnessController& brightness,
-//                           Controllers::MotorController& motorController,
-//                           Pinetime::Controllers::Settings& settingsController,
-//                           const Controllers::Ble& bleController)
-//: app {app},
-//  dateTimeController {dateTimeController},
-
-  label_time = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, 0, 0);
 
   lv_style_init(&btn_style);
   lv_style_set_radius(&btn_style, LV_STATE_DEFAULT, 20);
@@ -149,15 +132,15 @@ Music::Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::
   lv_label_set_text_static(txtTrack, "Title");
 
   /** Init animation */
-//imgDisc = lv_img_create(lv_scr_act(), nullptr);
-//lv_img_set_src_arr(imgDisc, &disc);
-//lv_obj_align(imgDisc, nullptr, LV_ALIGN_IN_TOP_RIGHT, -15, 15);
-//
-//imgDiscAnim = lv_img_create(lv_scr_act(), nullptr);
-//lv_img_set_src_arr(imgDiscAnim, &disc_f_1);
-//lv_obj_align(imgDiscAnim, nullptr, LV_ALIGN_IN_TOP_RIGHT, -15 - 32, 15);
-//
-//frameB = false;
+  imgDisc = lv_img_create(lv_scr_act(), nullptr);
+  lv_img_set_src_arr(imgDisc, &disc);
+  lv_obj_align(imgDisc, nullptr, LV_ALIGN_IN_TOP_RIGHT, -15, 15);
+
+  imgDiscAnim = lv_img_create(lv_scr_act(), nullptr);
+  lv_img_set_src_arr(imgDiscAnim, &disc_f_1);
+  lv_obj_align(imgDiscAnim, nullptr, LV_ALIGN_IN_TOP_RIGHT, -15 - 32, 15);
+
+  frameB = false;
 
   musicService.event(Controllers::MusicService::EVENT_MUSIC_OPEN);
 
