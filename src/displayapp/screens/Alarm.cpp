@@ -175,6 +175,7 @@ bool Alarm::OnButtonPushed() {
   }
   if (alarmController.IsAlerting()) {
     StopAlerting();
+    settingsController.SetNotificationStatus(Controllers::Settings::Notification::On);
     return true;
   }
   return false;
