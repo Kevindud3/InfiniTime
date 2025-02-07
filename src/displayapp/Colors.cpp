@@ -41,6 +41,10 @@ lv_color_t Pinetime::Applications::Convert(Pinetime::Controllers::Settings::Colo
       return LV_COLOR_ORANGE;
     case Pinetime::Controllers::Settings::Colors::Pink:
       return LV_COLOR_MAKE(0xFF, 0xAE, 0xC9);
+    case Pinetime::Controllers::Settings::Colors::Base:
+      return LV_COLOR_MAKE(0x19, 0x17, 0x24);
+	case Pinetime::Controllers::Settings::Colors::Rose:
+      return LV_COLOR_MAKE(0xeb, 0xbc, 0xba);
     default:
       return LV_COLOR_WHITE;
   }
