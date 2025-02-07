@@ -20,7 +20,7 @@ lv_color_t Pinetime::Applications::Convert(Pinetime::Controllers::Settings::Colo
     case Pinetime::Controllers::Settings::Colors::Yellow:
       return LV_COLOR_YELLOW;
     case Pinetime::Controllers::Settings::Colors::Olive:
-      return LV_COLOR_MAKE(0xb0, 0xb0, 0x0);
+      return LV_COLOR_MAKE(0xeb, 0xbc, 0xba);
     case Pinetime::Controllers::Settings::Colors::Lime:
       return LV_COLOR_LIME;
     case Pinetime::Controllers::Settings::Colors::Green:
@@ -28,7 +28,7 @@ lv_color_t Pinetime::Applications::Convert(Pinetime::Controllers::Settings::Colo
     case Pinetime::Controllers::Settings::Colors::Cyan:
       return LV_COLOR_CYAN;
     case Pinetime::Controllers::Settings::Colors::Teal:
-      return LV_COLOR_MAKE(0x0, 0xb0, 0xb0);
+      return LV_COLOR_MAKE(0x19, 0x17, 0x24);
     case Pinetime::Controllers::Settings::Colors::Blue:
       return LV_COLOR_BLUE;
     case Pinetime::Controllers::Settings::Colors::Navy:
@@ -41,10 +41,6 @@ lv_color_t Pinetime::Applications::Convert(Pinetime::Controllers::Settings::Colo
       return LV_COLOR_ORANGE;
     case Pinetime::Controllers::Settings::Colors::Pink:
       return LV_COLOR_MAKE(0xFF, 0xAE, 0xC9);
-    case Pinetime::Controllers::Settings::Colors::Base:
-      return LV_COLOR_MAKE(0x19, 0x17, 0x24);
-	case Pinetime::Controllers::Settings::Colors::Rose:
-      return LV_COLOR_MAKE(0xeb, 0xbc, 0xba);
     default:
       return LV_COLOR_WHITE;
   }
