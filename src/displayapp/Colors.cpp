@@ -32,7 +32,7 @@ lv_color_t Pinetime::Applications::Convert(Pinetime::Controllers::Settings::Colo
     case Pinetime::Controllers::Settings::Colors::Blue:
       return LV_COLOR_BLUE;
     case Pinetime::Controllers::Settings::Colors::Navy:
-      return LV_COLOR_MAKE(0xeb, 0xbc, 0xba);
+      return LV_COLOR_MAKE(0x31, 0x74, 0x8f);
     case Pinetime::Controllers::Settings::Colors::Magenta:
       return LV_COLOR_MAGENTA;
     case Pinetime::Controllers::Settings::Colors::Purple:
