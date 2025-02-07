@@ -24,7 +24,7 @@ lv_color_t Pinetime::Applications::Convert(Pinetime::Controllers::Settings::Colo
     case Pinetime::Controllers::Settings::Colors::Lime:
       return LV_COLOR_LIME;
     case Pinetime::Controllers::Settings::Colors::Green:
-      return LV_COLOR_MAKE(0x0, 0xb0, 0x0);
+      return LV_COLOR_MAKE(0x19, 0x17, 0x24);
     case Pinetime::Controllers::Settings::Colors::Cyan:
       return LV_COLOR_CYAN;
     case Pinetime::Controllers::Settings::Colors::Teal:
