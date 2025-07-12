@@ -24,6 +24,9 @@
 #include "displayapp/apps/Apps.h"
 #include "displayapp/Controllers.h"
 #include "Symbols.h"
+#include "components/motor/MotorController.h" // Include MotorController
+#include "components/datetime/DateTimeController.h" // Include DateTimeController
+
 
 namespace Pinetime {
   namespace Controllers {
@@ -34,13 +37,14 @@ namespace Pinetime {
     namespace Screens {
       class Music : public Screen {
       public:
-        Music(Pinetime::Controllers::MusicService& music);
+        Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController, Controllers::DateTime& dateTimeController); // Add DateTimeController to constructor
 
         ~Music() override;
 
         void Refresh() override;
 
         void OnObjectEvent(lv_obj_t* obj, lv_event_t event);
+        bool OnButtonPushed() override;
 
       private:
         bool OnTouchEvent(TouchEvents event) override;
@@ -66,6 +70,8 @@ namespace Pinetime {
         bool frameB;
 
         Pinetime::Controllers::MusicService& musicService;
+        Pinetime::Controllers::MotorController& motorController; // Add MotorController as a member
+        Controllers::DateTime& dateTimeController; // Add DateTimeController as a member
 
         std::string artist;
         std::string album;
@@ -81,8 +87,12 @@ namespace Pinetime {
         bool playing;
 
         lv_task_t* taskRefresh;
+        lv_task_t* taskUpdate;
+        lv_obj_t* label_time;
 
         /** Watchapp */
+        static void lv_update_task(struct _lv_task_t* task);
+        void UpdateScreen();
       };
     }
 
@@ -92,7 +102,7 @@ namespace Pinetime {
       static constexpr const char* icon = Screens::Symbols::music;
 
       static Screens::Screen* Create(AppControllers& controllers) {
-        return new Screens::Music(*controllers.musicService);
+        return new Screens::Music(*controllers.musicService, controllers.motorController, controllers.dateTimeController); // Pass DateTimeController to the Music constructor
       };
 
       static bool IsAvailable(Pinetime::Controllers::FS& /*filesystem*/) {
