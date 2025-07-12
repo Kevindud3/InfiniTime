@@ -24,6 +24,7 @@
 #include "displayapp/icons/music/disc_f_1.c"
 #include "displayapp/icons/music/disc_f_2.c"
 #include "displayapp/InfiniTimeTheme.h"
+#include "components/datetime/DateTimeController.h" // Include DateTimeController
 
 using namespace Pinetime::Applications::Screens;
 
@@ -48,7 +49,8 @@ inline void lv_img_set_src_arr(lv_obj_t* img, const lv_img_dsc_t* src_img) {
  *
  * TODO: Investigate Apple Media Service and AVRCPv1.6 support for seamless integration
  */
-Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
+Music::Music(Pinetime::Controllers::MusicService& music, Pinetime::Controllers::MotorController& motorController, Controllers::DateTime& dateTimeController)
+    : musicService(music), motorController(motorController), dateTimeController(dateTimeController) {
   lv_obj_t* label;
 
   lv_style_init(&btn_style);
@@ -141,10 +143,19 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   musicService.event(Controllers::MusicService::EVENT_MUSIC_OPEN);
 
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
+
+  // Add time label
+  label_time = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 0, 0);
+
+  // Create a task to update the time
+  taskUpdate = lv_task_create(lv_update_task, 5000, LV_TASK_PRIO_MID, this);
 }
 
 Music::~Music() {
   lv_task_del(taskRefresh);
+  lv_task_del(taskUpdate);
   lv_style_reset(&btn_style);
   lv_obj_clean(lv_scr_act());
 }
@@ -248,6 +259,12 @@ void Music::OnObjectEvent(lv_obj_t* obj, lv_event_t event) {
   }
 }
 
+bool Music::OnButtonPushed() {
+   musicService.event(Controllers::MusicService::EVENT_MUSIC_NEXT);
+   motorController.RunForDuration(30);
+     return true;
+}
+
 bool Music::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
   switch (event) {
     case TouchEvents::SwipeUp: {
@@ -280,4 +297,12 @@ bool Music::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
       return false;
     }
   }
+}
+void Music::lv_update_task(struct _lv_task_t* task) {
+  auto* user_data = static_cast<Music*>(task->user_data);
+  user_data->UpdateScreen();
+}
+
+void Music::UpdateScreen() {
+  lv_label_set_text(label_time, dateTimeController.FormattedTime().c_str());
 }
