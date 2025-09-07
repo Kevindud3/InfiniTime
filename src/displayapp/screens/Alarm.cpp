@@ -47,6 +47,7 @@ static void StopAlarmTaskCallback(lv_task_t* task) {
 Alarm::Alarm(Controllers::AlarmController& alarmController,
              Controllers::Settings::ClockType clockType,
              System::SystemTask& systemTask,
+             Pinetime::Controllers::Settings& settingsController,
              Controllers::MotorController& motorController)
   : alarmController {alarmController}, wakeLock(systemTask), motorController {motorController} {
 
@@ -222,6 +223,7 @@ void Alarm::StopAlerting() {
     taskStopAlarm = nullptr;
   }
   wakeLock.Release();
+  settingsController.SetNotificationStatus(Controllers::Settings::Notification::On);
   lv_obj_set_hidden(btnStop, true);
   hourCounter.ShowControls();
   minuteCounter.ShowControls();
