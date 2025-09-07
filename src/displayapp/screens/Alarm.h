@@ -33,6 +33,7 @@ namespace Pinetime {
         explicit Alarm(Controllers::AlarmController& alarmController,
                        Controllers::Settings::ClockType clockType,
                        System::SystemTask& systemTask,
+                       Pinetime::Controllers::Settings& settingsController,
                        Controllers::MotorController& motorController);
         ~Alarm() override;
         void SetAlerting();
